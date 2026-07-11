@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -73,7 +73,7 @@ public class AuthController {
         user.setEmail(signUpDto.getEmail());
         user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
 
-        Role roles = roleRepository.findByName("ROLE_ADMIN").get();
+        Role roles = roleRepository.findByName("ROLE_ADMIN").orElseThrow( () -> new RuntimeException("Role not found : ROLE_ADMIN"));
         user.setRoles(Collections.singleton(roles));
 
         // save data inside the database
